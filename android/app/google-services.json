@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "491479929136",
+    "project_id": "shopsbank-405b5",
+    "storage_bucket": "shopsbank-405b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:491479929136:android:8f9ce1098a9c2c15bcf8f5",
+        "android_client_info": {
+          "package_name": "com.example.anwer_shop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1oiumMw27H-c4dKCpk71ACiBZuhCC-xc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
