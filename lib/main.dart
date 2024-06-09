@@ -83,13 +83,13 @@ class StoreApp extends StatelessWidget {
               return BlocProvider(
                 create: (context) => SignInBloc(
                     userRepository:
-                    context.read<AuthenticationBloc>().userRepository),
+                        context.read<AuthenticationBloc>().userRepository),
                 child: const StoreView(),
               );
             } else {
               return const WelcomeScreen();
             }
-            },
+          },
         ),
       ),
     );
