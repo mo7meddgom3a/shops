@@ -1,8 +1,6 @@
-import 'package:anwer_shop/auth/blocs/authentication_bloc/authentication_bloc.dart';
-import 'package:anwer_shop/auth/blocs/sign_in_bloc/sign_in_bloc.dart';
-import 'package:anwer_shop/auth/blocs/sign_up_bloc/sign_up_bloc.dart';
-import 'package:anwer_shop/auth/firebase_user_repo.dart';
-import 'package:anwer_shop/auth/screens/login_screen/login_screen.dart';
+import 'package:anwer_shop/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:anwer_shop/blocs/sign_in_bloc/sign_in_bloc.dart';
+import 'package:anwer_shop/simple_bloc_observer.dart';
 import 'package:anwer_shop/store/cart/cubit/cart_cubit.dart';
 import 'package:anwer_shop/store/cart/view/cart_view.dart';
 import 'package:anwer_shop/store/catalog/view/catalog_view.dart';
@@ -11,23 +9,30 @@ import 'package:anwer_shop/store/product_details/views/product_details_view.dart
 import 'package:anwer_shop/store/store_items/cubit/categories_cubit.dart';
 import 'package:anwer_shop/store/store_items/cubit/store_items_cubit.dart';
 import 'package:anwer_shop/store/store_items/models/product_model.dart';
+import 'package:anwer_shop/store/store_items/views/store_view.dart';
 import 'package:anwer_shop/store/wishlist/cubit/wish_list_cubit.dart';
 import 'package:anwer_shop/store/wishlist/view/wishlist_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_repository/user_repository.dart';
 
+import 'auth/welcome_screen.dart';
 import 'firebase_options.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const ShopsApp());
+  Bloc.observer = SimpleBlocObserver();
+  runApp(StoreApp(userRepository: FirebaseUserRepo()));
 }
-class ShopsApp extends StatelessWidget {
-  const ShopsApp({super.key});
+
+class StoreApp extends StatelessWidget {
+  const StoreApp({super.key, required this.userRepository});
+
+  final UserRepository userRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +49,10 @@ class ShopsApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => StoreCategoriesCubit(),
-        ),BlocProvider(
-          create: (context) => SignInBloc(userRepository: FirebaseUserRepo()),
-        ),BlocProvider(
-          create: (context) => SignUpBloc(userRepository: FirebaseUserRepo()),
         ),
-        BlocProvider(
-          create: (context) => AuthenticationBloc(userRepo: FirebaseUserRepo()),
+        RepositoryProvider(
+          create: (context) =>
+              AuthenticationBloc(userRepository: userRepository),
         ),
       ],
       child: MaterialApp(
@@ -75,7 +77,20 @@ class ShopsApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const LoginScreen(),
+        home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          builder: (context, state) {
+            if (state.status == AuthenticationStatus.authenticated) {
+              return BlocProvider(
+                create: (context) => SignInBloc(
+                    userRepository:
+                    context.read<AuthenticationBloc>().userRepository),
+                child: const StoreView(),
+              );
+            } else {
+              return const WelcomeScreen();
+            }
+            },
+        ),
       ),
     );
   }
