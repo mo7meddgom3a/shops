@@ -49,10 +49,10 @@ class CartProductCard extends StatelessWidget {
               ),
               BlocBuilder<StoreItemsCubit, StoreItemsState>(
                 builder: (context, state) {
-                  final isProductAvailable = state is StoreItemsLoaded &&
-                      state.products.any((element) =>
+                  final isProductAvailable = state == StoreItemsStatus.loaded &&
+                      state.products!.any((element) =>
                       element.productID == product.productID);
-                  if (!isProductAvailable) {
+                  if (isProductAvailable) {
                     context.read<CartCubit>().removeFromCart(product: product);
                   }else {
                     return StreamBuilder<int>(

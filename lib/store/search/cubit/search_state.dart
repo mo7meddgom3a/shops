@@ -1,6 +1,30 @@
 part of 'search_cubit.dart';
 
-@immutable
-sealed class SearchState {}
+abstract class SearchState extends Equatable {
+  const SearchState();
 
-final class SearchInitial extends SearchState {}
+  @override
+  List<Object> get props => [];
+}
+
+class SearchInitial extends SearchState {}
+
+class SearchLoading extends SearchState {}
+
+class SearchLoaded extends SearchState {
+  final List<ProductModel> items;
+
+  const SearchLoaded({required this.items});
+
+  @override
+  List<Object> get props => [items];
+}
+
+class SearchError extends SearchState {
+  final String message;
+
+  const SearchError({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

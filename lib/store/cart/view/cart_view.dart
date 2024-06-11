@@ -24,9 +24,11 @@ class CartView extends StatelessWidget {
           icon: const Icon(EvaIcons.arrowBack,color: Colors.white),
         ),
         backgroundColor: ColorConstant.bgColor,
-        title: const Text(
-          'Cart',
-          style: TextStyle(color: Colors.white),
+        title: Center(
+          child: const Text(
+            'السلة',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ),
       body: const CartViewBody(),

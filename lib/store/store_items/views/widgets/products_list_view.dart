@@ -16,6 +16,7 @@ class ProductsListView extends StatelessWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.31,
       child: ListView.builder(
+        reverse: true,
         shrinkWrap: true,
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
         scrollDirection: Axis.horizontal,

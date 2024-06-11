@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ProductModel extends Equatable {
   final String name, description;
   final List <String> imageUrl;
@@ -62,4 +63,18 @@ class ProductModel extends Equatable {
       description: snapshot['description'],
     );
   }
+
+  factory ProductModel.fromJson(Map<String, dynamic> json) {
+    return ProductModel(
+      productID: json['productID'],
+      name: json['name'],
+      description: json['description'],
+      price: json['price'].toDouble(),
+      imageUrl: List<String>.from(json['imageUrl']),
+      category: json['category'],
+      isRecommended: json['isRecommended'],
+      isPopular: json['isPopular'],
+    );
+  }
+
 }

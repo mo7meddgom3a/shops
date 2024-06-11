@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../blocs/sign_in_bloc/sign_in_bloc.dart';
+import '../blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'components/my_text_field.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -36,7 +36,7 @@ class _SignInScreenState extends State<SignInScreen> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => const StoreView()));
+                  builder: (context) =>  HomeScreen()));
         } else if (state is SignInProcess) {
           setState(() {
             signInRequired = true;
@@ -139,6 +139,8 @@ class _SignInScreenState extends State<SignInScreen> {
                           )),
                     )
                   : loadingIndicator(color: Colors.white),
+
+              Text("Forget Password ?"),
             ],
           )),
     );

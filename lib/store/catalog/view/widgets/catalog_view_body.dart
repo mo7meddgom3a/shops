@@ -16,21 +16,21 @@ class CatalogViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<StoreItemsCubit, StoreItemsState>(
       builder: (context, state) {
-        if (state is StoreItemsLoaded) {
+        if (state == StoreItemsStatus.loaded) {
           final categoryProducts = state.products
-              .where((element) => element.category == category.name)
+              ?.where((element) => element.category == category.name)
               .toList();
           return GridView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, childAspectRatio: .8 , crossAxisSpacing: 10),
-            itemCount: categoryProducts.length,
+            itemCount: categoryProducts?.length,
             itemBuilder: (context, index) {
               return Center(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: ProductCard(
-                    product: categoryProducts[index],
+                    product: categoryProducts![index],
                     widthFactor: 2.2,
                   ),
                 ),

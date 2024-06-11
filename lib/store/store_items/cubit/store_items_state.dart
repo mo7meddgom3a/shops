@@ -1,45 +1,48 @@
 part of 'store_items_cubit.dart';
+enum StoreItemsStatus { initial, loading, loaded, error }
 
-@immutable
-sealed class StoreItemsState extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+class StoreItemsState extends Equatable {
+  final StoreItemsStatus status;
+  final List<ProductModel>? products;
+  final List<ProductModel>? recommendedProducts;
+  final List<ProductModel>? popularProducts;
+  final String? errorMessage;
+  final int? currentIndex;
 
-final class StoreItemsInitial extends StoreItemsState {
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
-}
-
-final class StoreItemsLoading extends StoreItemsState {
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
-}
-
-final class StoreItemsLoaded extends StoreItemsState {
-  final List<ProductModel> products;
-  final List<ProductModel> recommendedProducts;
-
-  final List<ProductModel> popularProducts;
-
-
-  StoreItemsLoaded(
-      {required this.products, required this.recommendedProducts, required this.popularProducts});
+  const StoreItemsState({
+    required this.status,
+    this.products,
+    this.recommendedProducts,
+    this.popularProducts,
+    this.errorMessage,
+    this.currentIndex,
+  });
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [products, recommendedProducts, popularProducts];
+  List<Object?> get props => [
+    status,
+    products,
+    recommendedProducts,
+    popularProducts,
+    errorMessage,
+    currentIndex,
+  ];
 
-}
-
-final class StoreItemsError extends StoreItemsState {
-  final String message;
-
-  StoreItemsError(this.message);
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [message];
+  StoreItemsState copyWith({
+    StoreItemsStatus? status,
+    List<ProductModel>? products,
+    List<ProductModel>? recommendedProducts,
+    List<ProductModel>? popularProducts,
+    String? errorMessage,
+    int? currentIndex,
+  }) {
+    return StoreItemsState(
+      status: status ?? this.status,
+      products: products ?? this.products,
+      recommendedProducts: recommendedProducts ?? this.recommendedProducts,
+      popularProducts: popularProducts ?? this.popularProducts,
+      errorMessage: errorMessage ?? this.errorMessage,
+      currentIndex: currentIndex ?? this.currentIndex,
+    );
+  }
 }

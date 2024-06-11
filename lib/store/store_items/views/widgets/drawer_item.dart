@@ -8,22 +8,25 @@ class DrawerItem extends StatelessWidget {
   final TextStyle? style;
   final double? size;
 
-  const DrawerItem({super.key, 
+  const DrawerItem({
+    Key? key,
     required this.icon,
     required this.title,
     required this.onTap,
     this.color,
-    this.style, this.size
-
-
-  });
+    this.style,
+    this.size,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onTap,
-      leading: Icon(icon, color: color??Colors.white,size:size ?? 20),
-      title: Text(title,style: style??const TextStyle(color: Colors.white)),
+    return Directionality(
+      textDirection: TextDirection.rtl,  // Setting the text direction to right-to-left
+      child: ListTile(
+        onTap: onTap,
+        leading: Icon(icon, color: color ?? Colors.white, size: size ?? 20),
+        title: Text(title, style: style ?? const TextStyle(color: Colors.white)),
+      ),
     );
   }
 }

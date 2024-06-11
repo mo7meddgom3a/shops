@@ -51,7 +51,7 @@ class ProductDetailsView extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            '${product.name} added to wishlist',
+                            ' تمت إضافت ${product.name} إلى قائمة المفضلة',
                           ),
                           duration: const Duration(milliseconds: 200),
                         ),
@@ -76,10 +76,9 @@ class ProductDetailsView extends StatelessWidget {
                          ScaffoldMessenger.of(context).showSnackBar(
                            SnackBar(
                              content: Text(
-                               '${product.name} added to cart',
+                               ' تمت إضافة ${product.name} إلى السلة',
                              ),
                              duration: const Duration(milliseconds: 200),
-
                            ),
                          );
                        }

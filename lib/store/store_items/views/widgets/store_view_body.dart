@@ -5,7 +5,6 @@ import 'package:anwer_shop/store/store_items/views/widgets/scroller_card_categor
 import 'package:anwer_shop/store/wishlist/cubit/wish_list_cubit.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,8 +35,7 @@ class StoreViewBody extends StatelessWidget {
             sliver: SliverToBoxAdapter(
               child: Column(
                 children: [
-                  const SectionTitle(title: "Categories"),
-
+                  const SectionTitle(title: "الأقسام"),
                   BlocBuilder<StoreCategoriesCubit, CategoriesState>(
                     builder: (context, state) {
                       if (state is CategoriesLoaded) {
@@ -54,65 +52,63 @@ class StoreViewBody extends StatelessWidget {
                         );
                       } else {
                         return Center(
-                            child: loadingIndicator(
-                          color: Colors.white,
-                        ));
+                          child: loadingIndicator(color: Colors.white),
+                        );
                       }
                     },
                   ),
-                  const SectionTitle(title: "RECOMMENDED"),
+                  const SectionTitle(title: "موصي بها"),
                   BlocBuilder<StoreItemsCubit, StoreItemsState>(
                     builder: (context, state) {
-                      if (state is StoreItemsLoaded) {
+                      if (state.status == StoreItemsStatus.loaded) {
                         final recommendedProducts =
-                            state.recommendedProducts.toSet().toList();
-                        return recommendedProducts.isNotEmpty
+                            state.recommendedProducts?.toSet().toList();
+                        return recommendedProducts != null &&
+                                recommendedProducts.isNotEmpty
                             ? ProductsListView(products: recommendedProducts)
                             : const Text(
-                                "No items in RECOMMENDED",
+                                "لا يوجد عناصر موصى بها",
                                 style: TextStyle(color: Colors.white),
                               );
                       } else {
                         return Center(
-                          child: loadingIndicator(
-                            color: Colors.white,
-                          ),
+                          child: loadingIndicator(color: Colors.white),
                         );
                       }
                     },
                   ),
-                  const SectionTitle(title: "MOST POPULAR"),
+                  const SectionTitle(title: "الأكثر شعبية"),
                   BlocBuilder<StoreItemsCubit, StoreItemsState>(
                     builder: (context, state) {
-                      if (state is StoreItemsLoaded) {
+                      if (state.status == StoreItemsStatus.loaded) {
                         final popularProducts =
-                            state.popularProducts.toSet().toList();
-                        return popularProducts.isNotEmpty
+                            state.popularProducts?.toSet().toList();
+                        return popularProducts != null &&
+                                popularProducts.isNotEmpty
                             ? ProductsListView(products: popularProducts)
-                            : const Text("No items in POPULAR",
-                                style: TextStyle(color: Colors.white));
+                            : const Text(
+                                "لا يوجد عناصر في الأكثر شعبية",
+                                style: TextStyle(color: Colors.white),
+                              );
                       } else {
                         return Center(
-                          child: loadingIndicator(
-                            color: Colors.white,
-                          ),
+                          child: loadingIndicator(color: Colors.white),
                         );
                       }
                     },
                   ),
-                  const SectionTitle(title: "All Items"),
+                  const SectionTitle(title: "جميع المنتجات"),
                 ],
               ),
             ),
           ),
           BlocBuilder<StoreItemsCubit, StoreItemsState>(
             builder: (context, state) {
-              if (state is StoreItemsLoaded) {
-                final allProducts = state.products.toSet().toList();
-                return allProducts.isNotEmpty
+              if (state.status == StoreItemsStatus.loaded) {
+                final allProducts = state.products?.toSet().toList();
+                return allProducts != null && allProducts.isNotEmpty
                     ? SliverPadding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16,),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         sliver: SliverGrid(
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
@@ -138,9 +134,7 @@ class StoreViewBody extends StatelessWidget {
               } else {
                 return SliverToBoxAdapter(
                   child: Center(
-                    child: loadingIndicator(
-                      color: Colors.white,
-                    ),
+                    child: loadingIndicator(color: Colors.white),
                   ),
                 );
               }

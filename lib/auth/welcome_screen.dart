@@ -6,9 +6,9 @@ import 'package:blurrycontainer/blurrycontainer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../blocs/authentication_bloc/authentication_bloc.dart';
-import '../../blocs/sign_in_bloc/sign_in_bloc.dart';
-import '../../blocs/sign_up_bloc/sign_up_bloc.dart';
+import '../blocs/authentication_bloc/authentication_bloc.dart';
+import '../blocs/sign_in_bloc/sign_in_bloc.dart';
+import '../blocs/sign_up_bloc/sign_up_bloc.dart';
 import 'sign_up_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {

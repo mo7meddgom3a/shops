@@ -35,9 +35,11 @@ class CheckOutView extends StatelessWidget {
                 color: Colors.white),
           ),
           backgroundColor: ColorConstant.bgColor,
-          title: const Text(
-            'CheckOut',
-            style:  TextStyle(color: Colors.white),
+          title: const Center(
+            child: Text(
+              'الطلب',
+              style:  TextStyle(color: Colors.white),
+            ),
           ),
         ),
         body:  CheckOutViewBody(),

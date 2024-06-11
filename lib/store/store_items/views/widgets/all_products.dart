@@ -11,19 +11,19 @@ class AllProducts extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<StoreItemsCubit, StoreItemsState>(
       builder: (context, state) {
-        if (state is StoreItemsLoaded) {
+        if (state == StoreItemsStatus.loaded) {
           final products = state.products;
           return GridView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, childAspectRatio: .8 , crossAxisSpacing: 10),
-            itemCount: products.length,
+            itemCount: products?.length,
             itemBuilder: (context, index) {
               return Center(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: ProductCard(
-                    product: products[index],
+                    product: products![index],
                     widthFactor: 2.2,
                   ),
                 ),

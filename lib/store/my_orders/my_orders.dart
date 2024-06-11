@@ -15,23 +15,17 @@ class MyOrders extends StatelessWidget {
     return BlocProvider(
       create: (context) => OrdersCubit()..fetchUserOrders(),
       child: Scaffold(
-          backgroundColor: ColorConstant.bgColor,
-          appBar: AppBar(
+        appBar: AppBar(
+            backgroundColor: ColorConstant.primaryColor,
+            title: const Center(child: Text('طلباتي        ',style: TextStyle(color: Colors.white))),
             leading: IconButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: const Icon(
-                EvaIcons.arrowBack,
-                color: Colors.white,
-              ),
-            ),
-            backgroundColor: ColorConstant.bgColor,
-            title: const Text(
-              'My Orders',
-              style: TextStyle(color: Colors.white),
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
             ),
           ),
+          backgroundColor: ColorConstant.bgColor,
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(10),

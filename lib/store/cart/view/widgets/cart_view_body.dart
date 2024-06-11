@@ -1,4 +1,3 @@
-
 import 'package:anwer_shop/core/loading_indicator.dart';
 import 'package:anwer_shop/store/cart/cubit/cart_cubit.dart';
 import 'package:anwer_shop/store/cart/view/widgets/cart_product_card.dart';
@@ -7,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CartViewBody extends StatelessWidget {
-  const CartViewBody({super.key});
+  const CartViewBody({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +16,12 @@ class CartViewBody extends StatelessWidget {
         builder: (context, state) {
           if (state is CartLoading) {
             return Center(
-                child: loadingIndicator(
-                  color: Colors.white,
-                ));
+              child: loadingIndicator(color: Colors.white),
+            );
           } else if (state is CartLoaded) {
             if (state.cartItems.isEmpty) {
-              return  Center(
-                child:SvgPicture.asset(
+              return Center(
+                child: SvgPicture.asset(
                   'assets/empty.svg',
                   height: 200,
                 ),
@@ -57,62 +55,30 @@ class CartViewBody extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text("Total",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              )),
+
                           StreamBuilder<double>(
                             stream: context.read<CartCubit>().totalPrice(),
                             builder: (context, snapshot) {
                               final subtotal = snapshot.data ?? 0;
-                              return Text("\$$subtotal",
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                  ));
+                              return Text(
+                                "\$$subtotal",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              );
                             },
+                          ),
+                          Text(
+                            "الاجمالي ",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 8),
-                      // const Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     Text("Delivery Fee",
-                      //         style: TextStyle(
-                      //           color: Colors.white,
-                      //           fontSize: 16,
-                      //         )),
-                      //     Text("\$10",
-                      //         style: TextStyle(
-                      //           color: Colors.white,
-                      //           fontSize: 16,
-                      //         )),
-                      //   ],
-                      // ),
-                      const SizedBox(height: 16),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     const Text("Total",
-                      //         style: TextStyle(
-                      //           color: Colors.white,
-                      //           fontSize: 16,
-                      //         )),
-                      //     StreamBuilder<double>(
-                      //       stream: context.read<CartCubit>().totalPrice(),
-                      //       builder: (context, snapshot) {
-                      //         final total = (snapshot.data ?? 0) + 10;
-                      //         return Text("\$$total",
-                      //             style: const TextStyle(
-                      //               color: Colors.white,
-                      //               fontSize: 16,
-                      //             ));
-                      //       },
-                      //     ),
-                      //   ],
-                      // ),
                       const SizedBox(height: 16),
                       Center(
                         child: ElevatedButton(
@@ -120,7 +86,8 @@ class CartViewBody extends StatelessWidget {
                             Navigator.pushNamed(context, 'Checkout',
                                 arguments: state.cartItems);
                           },
-                          child: const Text("Checkout"),
+                          child: const Text("طلب الان",
+                              style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -130,8 +97,11 @@ class CartViewBody extends StatelessWidget {
               ],
             );
           } else if (state is CartError) {
-            return  Center(
-              child: Text("Error loading cart items" , style: TextStyle(color: Colors.white),),
+            return const Center(
+              child: Text(
+                "حدث خطأ ما يرجى المحاولة مرة أخرى",
+                style: TextStyle(color: Colors.white),
+              ),
             );
           }
           return const SizedBox();
