@@ -16,7 +16,7 @@ class CatalogViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<StoreItemsCubit, StoreItemsState>(
       builder: (context, state) {
-        if (state == StoreItemsStatus.loaded) {
+        if (state.status == StoreItemsStatus.loaded) {
           final categoryProducts = state.products
               ?.where((element) => element.category == category.name)
               .toList();
