@@ -1,19 +1,21 @@
-import 'package:anwer_shop/core/colors.dart';
-import 'package:anwer_shop/store/checkout/cubit/place_order_cubit.dart';
-import 'package:anwer_shop/store/store_items/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
+
+import 'package:anwer_shop/core/colors.dart';
+import 'package:anwer_shop/store/checkout/cubit/place_order_cubit.dart';
 
 class CheckOutViewBody extends StatelessWidget {
-  CheckOutViewBody({Key? key}) : super(key: key);
+  CheckOutViewBody({super.key});
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final MapController mapController = MapController();
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<PlaceOrderCubit, PlaceOrderState>(
       listener: (context, state) {
-        if (state is PlaceOrderSuccess) {
+        if (state.state == PlaceOrderStatus.loaded) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: const Text('Order placed successfully!'),
@@ -29,7 +31,7 @@ class CheckOutViewBody extends StatelessWidget {
           // Navigate back after successful order placement
           int count = 0;
           Navigator.of(context).popUntil((_) => count++ >= 2);
-        } else if (state is PlaceOrderFailed) {
+        } else if (state.state == PlaceOrderStatus.error) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text("Failed to place order"),
@@ -45,7 +47,7 @@ class CheckOutViewBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
+                const Text(
                   'عنوان التوصيل',
                   style: TextStyle(
                     fontSize: 20,
@@ -54,13 +56,14 @@ class CheckOutViewBody extends StatelessWidget {
                   ),
                   textDirection: TextDirection.rtl,
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 CustomTextFormField(
-                  controller: context.read<PlaceOrderCubit>().locationController,
+                  controller:
+                      context.read<PlaceOrderCubit>().locationController,
                   hintText: 'ادخل عنوان التوصيل',
                 ),
-                SizedBox(height: 20),
-                Text(
+                const SizedBox(height: 20),
+                const Text(
                   'رقم الهاتف',
                   style: TextStyle(
                     fontSize: 20,
@@ -69,14 +72,15 @@ class CheckOutViewBody extends StatelessWidget {
                   ),
                   textDirection: TextDirection.rtl,
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 CustomTextFormField(
                   keyboardType: TextInputType.phone,
-                  controller: context.read<PlaceOrderCubit>().contactNumberController,
+                  controller:
+                      context.read<PlaceOrderCubit>().contactNumberController,
                   hintText: 'ادخل رقم الهاتف',
                 ),
-                SizedBox(height: 20),
-                Text(
+                const SizedBox(height: 20),
+                const Text(
                   'ملاحظات',
                   style: TextStyle(
                     fontSize: 20,
@@ -85,43 +89,65 @@ class CheckOutViewBody extends StatelessWidget {
                   ),
                   textDirection: TextDirection.rtl,
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 CustomTextFormField(
                   controller: context.read<PlaceOrderCubit>().notesController,
                   hintText: 'ادخل ملاحظاتك هنا',
                   isOptional: true,
                 ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    // Add logic to pick location from map
-                    _pickLocationFromMap(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                const SizedBox(height: 20),
+                     ElevatedButton(
+                      onPressed: () {
+                        context.read<PlaceOrderCubit>().getCurrentLocation();
+                        context.read<PlaceOrderCubit>().getAddressFromLatLng();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        backgroundColor: ColorConstant.primaryColor,
+                        padding: const EdgeInsets.all(16),
+                        minimumSize: const Size(double.infinity, 50),
+                      ),
+                      child: const Text(
+                        'اختر الموقع من ',
+                        style: TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    backgroundColor: ColorConstant.primaryColor,
-                    padding: const EdgeInsets.all(16),
-                    minimumSize: const Size(double.infinity, 50),
-                  ),
-                  child: Text(
-                    'اختر الموقع من الخريطة',
-                    style: TextStyle(color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ),
+
+                const SizedBox(
+                  height: 20,
                 ),
-                SizedBox(height: 20),
+                BlocBuilder<PlaceOrderCubit, PlaceOrderState>(
+                  builder: (context, state) {
+                    return Container(
+                      width: double.infinity,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Center(
+                        child: Text(
+                          state.currentLocationName,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 13),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
                 BlocBuilder<PlaceOrderCubit, PlaceOrderState>(
                   builder: (context, state) {
                     return ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          await context.read<PlaceOrderCubit>().totalCartPrice();
-                          List<ProductModel> products = context.read<PlaceOrderCubit>().products;
-                          context.read<PlaceOrderCubit>().placeOrder(product: products);
-
-                          context.read<PlaceOrderCubit>().clearCart();
+                          final cubit = context.read<PlaceOrderCubit>();
+                          await cubit
+                              .fetchCartItems(); // Ensure items are fetched before placing order
+                          cubit.placeOrder(product: cubit.products);
+                          cubit.clearCart();
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -132,11 +158,11 @@ class CheckOutViewBody extends StatelessWidget {
                         padding: const EdgeInsets.all(16),
                         minimumSize: const Size(double.infinity, 50),
                       ),
-                      child: Text(
-                        'تأكيد الطلب',
-                        style: TextStyle(color: Colors.white),
-                        textAlign: TextAlign.center,
-                      ),
+                      child: const Text(
+                              'Submit Order',
+                              style: TextStyle(color: Colors.white),
+                              textAlign: TextAlign.center,
+                            ),
                     );
                   },
                 ),
@@ -147,13 +173,8 @@ class CheckOutViewBody extends StatelessWidget {
       ),
     );
   }
-
-  void _pickLocationFromMap(BuildContext context) {
-    // Implement logic to pick location from map
-    // Example: You can navigate to another screen where user can pick location from map
-    // Navigator.push(context, MaterialPageRoute(builder: (context) => MapScreen()));
-  }
 }
+
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     super.key,
@@ -179,24 +200,24 @@ class CustomTextFormField extends StatelessWidget {
       },
       controller: controller,
       keyboardType: keyboardType ?? TextInputType.text,
-      style: TextStyle(color: Colors.white),
+      style: const TextStyle(color: Colors.white),
       textAlign: TextAlign.right,
       decoration: InputDecoration(
-        focusedErrorBorder: OutlineInputBorder(
+        focusedErrorBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.red),
         ),
-        errorBorder: OutlineInputBorder(
+        errorBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.red),
         ),
-        enabledBorder: OutlineInputBorder(
+        enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.white),
         ),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.white),
         ),
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.white),
-        border: OutlineInputBorder(),
+        hintStyle: const TextStyle(color: Colors.white),
+        border: const OutlineInputBorder(),
       ),
     );
   }

@@ -1,24 +1,52 @@
-part of 'place_order_cubit.dart';
-
-@immutable
-sealed class PlaceOrderState {}
+  part of 'place_order_cubit.dart';
 
 
-final List<ProductModel> products = [];
+  enum PlaceOrderStatus { initial, loading, loaded, error }
 
-final class PlaceOrderInitial extends PlaceOrderState {}
+  class PlaceOrderState extends Equatable {
+     List<ProductModel> products;
+    final String mapLocation;
+    final PlaceOrderStatus state;
+    final String? errorMessage;
+    final LatLng currentLocation;
+    final bool locationFetched;
+    final String currentLocationName;
 
-final class PlaceOrderLoading extends PlaceOrderState {}
+     PlaceOrderState({
+      this.currentLocation = const LatLng(24.774265, 46.738586),
+      this.state = PlaceOrderStatus.initial,
+      this.errorMessage,
+      this.locationFetched = false,
+      this.currentLocationName = "",
+      this.mapLocation = "",
+      this.products = const [],
+    });
 
-final class PlaceOrderSuccess extends PlaceOrderState {
-final List<ProductModel> product;
+    PlaceOrderState copyWith({
+      PlaceOrderStatus? state,
+      String? errorMessage,
+      LatLng? currentLocation,
+      bool? locationFetched,
+      String? currentLocationName,
+      String? mapLocation,
+    }) {
+      return PlaceOrderState(
+        currentLocation: currentLocation ?? this.currentLocation,
+        state: state ?? this.state,
+        errorMessage: errorMessage ?? this.errorMessage,
+        locationFetched: locationFetched ?? this.locationFetched,
+        currentLocationName: currentLocationName ?? this.currentLocationName,
+        mapLocation: mapLocation ?? this.mapLocation,
+      );
+    }
 
-
-  PlaceOrderSuccess(this.product);
-}
-
-final class PlaceOrderFailed extends PlaceOrderState {
-  final String error;
-
-  PlaceOrderFailed(this.error);
-}
+    @override
+    List<Object?> get props => [
+      state,
+      errorMessage,
+      currentLocation,
+      locationFetched,
+      currentLocationName,
+      mapLocation
+    ];
+  }

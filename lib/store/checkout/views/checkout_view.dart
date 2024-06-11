@@ -9,15 +9,13 @@ import 'widgets/checkout_view_body.dart';
 
 class CheckOutView extends StatelessWidget {
   const CheckOutView({super.key, required this.product});
-
   final List<ProductModel> product;
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => PlaceOrderCubit()..placeOrder(product: product)),
-        BlocProvider(create: (context) => PlaceOrderCubit()..fetchCartItems()),
-
+        BlocProvider(create: (context) => PlaceOrderCubit()..fetchCartItems()..getCurrentLocation()..getAddressFromLatLng()),
 
       ],
       child: Scaffold(
@@ -42,7 +40,7 @@ class CheckOutView extends StatelessWidget {
             ),
           ),
         ),
-        body:  CheckOutViewBody(),
+        body: CheckOutViewBody(),
       ),
     );
   }
