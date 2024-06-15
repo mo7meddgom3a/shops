@@ -11,10 +11,10 @@ class CartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorConstant.bgColor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: ColorConstant.primaryColor,
+          statusBarColor: Colors.blueGrey,
           systemNavigationBarDividerColor: ColorConstant.primaryColor,
         ),
         leading: IconButton(
@@ -23,7 +23,7 @@ class CartView extends StatelessWidget {
           },
           icon: const Icon(EvaIcons.arrowBack,color: Colors.white),
         ),
-        backgroundColor: ColorConstant.bgColor,
+        backgroundColor:Colors.blueGrey,
         title: Center(
           child: const Text(
             'السلة',

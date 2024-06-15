@@ -35,7 +35,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-			backgroundColor: ColorConstant.bgColor.withOpacity(0.5),
+			backgroundColor:Colors.blueGrey,
 			body: SingleChildScrollView(
 				child: BlurryContainer(
 					borderRadius: BorderRadius.circular(40),
@@ -60,7 +60,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
 				  	    						Padding(
 				  	    							padding: EdgeInsets.all(12.0),
 				  	    							child: Text(
-				  	    								'Sign In',
+				  	    								'تسجيل دخول',
 				  	    								style: TextStyle(
 				  	    									fontSize: 18,
 																	color: Colors.white
@@ -70,7 +70,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
 				  	    						Padding(
 				  	    							padding: EdgeInsets.all(12.0),
 				  	    							child: Text(
-				  	    								'Sign Up',
+				  	    								'انشاء حساب',
 				  	    								style: TextStyle(
 				  	    									fontSize: 18,
 																	color: Colors.white

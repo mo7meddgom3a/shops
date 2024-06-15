@@ -61,9 +61,9 @@ class CartViewBody extends StatelessWidget {
                             builder: (context, snapshot) {
                               final subtotal = snapshot.data ?? 0;
                               return Text(
-                                "\$$subtotal",
+                                "$subtotal SAR",
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Colors.blueGrey,
                                   fontSize: 16,
                                 ),
                               );
@@ -72,22 +72,34 @@ class CartViewBody extends StatelessWidget {
                           Text(
                             "الاجمالي ",
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Colors.blueGrey,
                               fontSize: 16,
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 8),
                       const SizedBox(height: 16),
                       Center(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, 'Checkout',
-                                arguments: state.cartItems);
-                          },
-                          child: const Text("طلب الان",
-                              style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                        child: Container(
+                          width: 100,
+                          height: 40,
+                          decoration: BoxDecoration(
+                              color: Colors.blueGrey,
+
+                              borderRadius: BorderRadius.circular(13)
+                          ),
+
+                          child: InkWell(
+                              borderRadius: BorderRadius.circular(13),
+                            onTap: () {
+                              Navigator.pushNamed(context, 'Checkout',
+                                  arguments: state.cartItems);
+                            },
+                            child: Center(
+                              child: const Text("طلب الان",
+                                  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 16),

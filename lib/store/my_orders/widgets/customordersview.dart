@@ -40,7 +40,7 @@ class CustomOrdersView extends StatelessWidget {
                   return ListTile(
                     title: Text("${product['name']}"),
                     subtitle: Text(
-                      "Price: \$${product['price']} | Quantity: ${product['productCount']}",
+                      " SAR السعر: ${product['price']}  \n الكميه: ${product['productCount']}",
                     ),
                   );
                 },
@@ -49,7 +49,7 @@ class CustomOrdersView extends StatelessWidget {
               ListTile(
                 contentPadding: const EdgeInsets.all(0),
                 title: const Text(
-                  "Phone Number",
+                  "رقم الجوال ",
                   style: TextStyle(fontSize: 14,),
                 ),
                  subtitle:  Text(
@@ -59,7 +59,7 @@ class CustomOrdersView extends StatelessWidget {
               ),
               ListTile(
                 contentPadding: const EdgeInsets.all(0),
-                title: const Text("Shipping Address"),
+                title: const Text("عنوان الشحن"),
                 subtitle: Text(order.address),
 
               ),
@@ -69,11 +69,6 @@ class CustomOrdersView extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const Text('Status:',style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),),
-                      const SizedBox(width: 5,),
                       Text(
                         order.status,
                         style: TextStyle(
@@ -84,11 +79,18 @@ class CustomOrdersView extends StatelessWidget {
                                 ? Colors.red
                                 : Colors.blue),
                       ),
+                      const SizedBox(width: 5,),
+
+                      const Text('حاله الطلب',style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),),
+
                     ],
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    "Total: ${order.totalPrice}",
+                    "SAR  الاجمالي ${order.totalPrice} ",
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

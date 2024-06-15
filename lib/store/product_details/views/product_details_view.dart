@@ -17,10 +17,11 @@ class ProductDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorConstant.bgColor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
+
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: ColorConstant.primaryColor,
+          statusBarColor:Colors.blueGrey,
           systemNavigationBarDividerColor: ColorConstant.primaryColor,
         ),
         leading: IconButton(
@@ -29,14 +30,14 @@ class ProductDetailsView extends StatelessWidget {
           },
           icon: const Icon(Icons.arrow_back, color: Colors.white),
         ),
-        backgroundColor: ColorConstant.bgColor,
+        backgroundColor: Colors.blueGrey,
         title: Text(
           product.name,
           style: const TextStyle(color: Colors.white),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: ColorConstant.bgColor,
+        color: Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -58,7 +59,7 @@ class ProductDetailsView extends StatelessWidget {
                       );
                     }
                   },
-                  icon: const Icon(Icons.favorite, color: Colors.white),
+                  icon: const Icon(Icons.favorite, color:Colors.red,),
                 );
               },
             ),
@@ -66,7 +67,7 @@ class ProductDetailsView extends StatelessWidget {
               builder: (context, state) {
                 return ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorConstant.primaryColor,
+                      backgroundColor: Colors.blueGrey,
                     ),
                     onPressed: () async{
                        await context.read<CartCubit>().addToFireStoreCart(

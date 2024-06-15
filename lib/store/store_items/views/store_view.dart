@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
     return BlocBuilder<UserInfoCubit, UserInfoState>(
       builder: (context, userInfoState) {
         return AdvancedDrawer(
-          backdropColor: ColorConstant.primaryColor,
+          backdropColor: Colors.blueGrey,
           controller: _advancedDrawerController,
           animationCurve: Curves.easeInOut,
           animationDuration: const Duration(milliseconds: 300),
@@ -88,14 +88,14 @@ class HomeScreen extends StatelessWidget {
                             })
                             : Image.asset('assets/user.png'),
                       ),
-                      Text(
-                        FirebaseAuth.instance.currentUser!.displayName!,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      // Text(
+                      //   FirebaseAuth.instance.currentUser!.displayName!,
+                      //   style: const TextStyle(
+                      //     color: Colors.white,
+                      //     fontSize: 18,
+                      //     fontWeight: FontWeight.bold,
+                      //   ),
+                      // ),
                     ],
                   ),
                   DrawerItem(
@@ -124,7 +124,7 @@ class HomeScreen extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            backgroundColor: ColorConstant.bgColor,
+                            backgroundColor: Colors.blueGrey,
                             shadowColor: ColorConstant.primaryColor,
                             surfaceTintColor: ColorConstant.primaryColor,
                             scrollable: true,
@@ -176,25 +176,21 @@ class HomeScreen extends StatelessWidget {
           ),
           rtlOpening: true,
           child: Scaffold(
-            backgroundColor: ColorConstant.bgColor,
+            backgroundColor: ColorConstant.whiteA700,
             appBar: AppBar(
-              systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: ColorConstant.bgColor,
+              systemOverlayStyle: const SystemUiOverlayStyle(
+                statusBarColor: Colors.blueGrey,
                 statusBarIconBrightness: Brightness.light,
                 systemNavigationBarIconBrightness: Brightness.light,
-                systemNavigationBarDividerColor: ColorConstant.bgColor,
-                systemNavigationBarColor: ColorConstant.bgColor,
+                systemNavigationBarDividerColor: Colors.blueGrey,
+                systemNavigationBarColor: Colors.blueGrey,
                 systemStatusBarContrastEnforced: true,
                 statusBarBrightness: Brightness.light,
                 systemNavigationBarContrastEnforced: true,
               ),
-              backgroundColor: ColorConstant.bgColor,
-              title: const Center(
-                child: Text(
-                  'المتجر',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+              backgroundColor: Colors.blueGrey,
+              centerTitle: true,
+              title:  Image.asset('assets/pets.png',width: 70,height: 70,color: Colors.white,fit: BoxFit.cover,),
               leading: Padding(
                 padding: const EdgeInsets.only(left: 12.0,top: 10),
                 child: GestureDetector(
@@ -219,7 +215,7 @@ class HomeScreen extends StatelessWidget {
                         } else {
                           return Icon(
                             EvaIcons.shoppingCartOutline,
-                            color: ColorConstant.red,
+                            color: ColorConstant.whiteA700,
                             size: 25,
                           );
                         }
@@ -260,7 +256,7 @@ class HomeScreen extends StatelessWidget {
                   },
                   selectedItemColor: ColorConstant.whiteA700,
                   unselectedItemColor: Colors.white.withOpacity(0.5),
-                  backgroundColor: ColorConstant.primaryColor,
+                  backgroundColor: Colors.blueGrey,
                   items: [
                     const BottomNavigationBarItem(
                       icon: Icon(Icons.home_outlined),

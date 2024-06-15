@@ -19,155 +19,160 @@ class CartProductCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Column(
         children: [
-          Row(
-            children: [
-              Container(
-                height: 80,
-                width: 100,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(product.imageUrl[0]),
-                    fit: BoxFit.cover,
+          Card(
+            shadowColor: Colors.blueGrey,
+            surfaceTintColor: Colors.blueGrey,
+            elevation: 3,
+            child: Row(
+              children: [
+                Container(
+                  height: 80,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(product.imageUrl[0]),
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      product.name,
-                      style: const TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                    Text(
-                      "${product.price}\$",
-                      style: const TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                  ],
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        product.name,
+                        style: const TextStyle(color: Colors.black, fontSize: 16),
+                      ),
+                      Text(
+                        "${product.price} SAR",
+                        style: const TextStyle(color: Colors.black, fontSize: 16),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              BlocBuilder<StoreItemsCubit, StoreItemsState>(
-                builder: (context, state) {
-                  final isProductAvailable = state == StoreItemsStatus.loaded &&
-                      state.products!.any((element) =>
-                      element.productID == product.productID);
-                  if (isProductAvailable) {
-                    context.read<CartCubit>().removeFromCart(product: product);
-                  }else {
-                    return StreamBuilder<int>(
-                      stream:
-                      context.read<CartCubit>().productCount(product: product),
-                      builder: (context, AsyncSnapshot<int> snapshot) {
-                        if (snapshot.hasData && snapshot.data != null) {
+                BlocBuilder<StoreItemsCubit, StoreItemsState>(
+                  builder: (context, state) {
+                    final isProductAvailable = state == StoreItemsStatus.loaded &&
+                        state.products!.any((element) =>
+                        element.productID == product.productID);
+                    if (isProductAvailable) {
+                      context.read<CartCubit>().removeFromCart(product: product);
+                    }else {
+                      return StreamBuilder<int>(
+                        stream:
+                        context.read<CartCubit>().productCount(product: product),
+                        builder: (context, AsyncSnapshot<int> snapshot) {
+                          if (snapshot.hasData && snapshot.data != null) {
+                            return Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () async {
+                                    if (snapshot.data == 1) {
+                                      await showDialog(
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(10)),
+
+                                            backgroundColor: Colors.blueGrey,
+                                            title: const Text(
+                                              'Remove from cart?' , style: TextStyle(color: Colors.white),),
+                                            actions: [
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: ColorConstant.green,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(10),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                              ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(10),
+                                                  ),
+                                                  backgroundColor: Colors.red,
+                                                ),
+                                                onPressed: () {
+                                                  context
+                                                      .read<CartCubit>()
+                                                      .removeFromCart(
+                                                      product: product);
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text(
+                                                  'Remove',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      context
+                                          .read<CartCubit>()
+                                          .decrementProductCount(
+                                          product: product);
+                                    }
+                                  },
+                                  icon: const Icon(EvaIcons.minusCircleOutline,
+                                      color: Colors.red),
+                                ),
+                                Text(
+                                  snapshot.data.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.blueGrey, fontSize: 16),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    context
+                                        .read<CartCubit>()
+                                        .incrementProductCount(product: product);
+                                  },
+                                  icon: const Icon(EvaIcons.plusCircleOutline,
+                                      color: Colors.green),
+                                ),
+                              ],
+                            );
+                          }
                           return Row(
                             children: [
                               IconButton(
-                                onPressed: () async {
-                                  if (snapshot.data == 1) {
-                                    await showDialog(
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(10)),
-
-                                          backgroundColor: ColorConstant.bgColor,
-                                          title: const Text(
-                                            'Remove from cart?' , style: TextStyle(color: Colors.white),),
-                                          actions: [
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: ColorConstant.green,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                ),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text(
-                                                'Cancel',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                ),
-                                                backgroundColor: Colors.red,
-                                              ),
-                                              onPressed: () {
-                                                context
-                                                    .read<CartCubit>()
-                                                    .removeFromCart(
-                                                    product: product);
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text(
-                                                'Remove',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  } else {
-                                    context
-                                        .read<CartCubit>()
-                                        .decrementProductCount(
-                                        product: product);
-                                  }
+                                onPressed: () {
                                 },
-                                icon: const Icon(EvaIcons.minusCircleOutline,
+                                icon: const Icon(Icons.remove_circle_outline,
                                     color: Colors.red),
                               ),
-                              Text(
-                                snapshot.data.toString(),
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 16),
-                              ),
+                              const Text("1" , style: TextStyle(color: Colors.white, fontSize: 16),),
                               IconButton(
                                 onPressed: () {
-                                  context
-                                      .read<CartCubit>()
-                                      .incrementProductCount(product: product);
                                 },
-                                icon: const Icon(EvaIcons.plusCircleOutline,
+                                icon: const Icon(Icons.add_circle_outline,
                                     color: Colors.green),
                               ),
                             ],
                           );
-                        }
-                        return Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                              },
-                              icon: const Icon(Icons.remove_circle_outline,
-                                  color: Colors.red),
-                            ),
-                            const Text("1" , style: TextStyle(color: Colors.white, fontSize: 16),),
-                            IconButton(
-                              onPressed: () {
-                              },
-                              icon: const Icon(Icons.add_circle_outline,
-                                  color: Colors.green),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  }
-                  return const SizedBox();
-                },
-              ),
-            ],
+                        },
+                      );
+                    }
+                    return const SizedBox();
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),

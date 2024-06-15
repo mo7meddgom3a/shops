@@ -54,7 +54,7 @@ class ProductDetailsViewBody extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  "${product.price} EGP",
+                  "${product.price} SAR",
                   style: const TextStyle(
                     color: Colors.green,
                     fontSize: 20.0,
@@ -65,7 +65,7 @@ class ProductDetailsViewBody extends StatelessWidget {
                 const Text(
                   'الوصف',
                   style: TextStyle(
-                    color: Colors.blue,
+                    color: Colors.blueGrey,
                     fontSize: 25.0,
                     fontWeight: FontWeight.bold,
                   ),
@@ -76,7 +76,7 @@ class ProductDetailsViewBody extends StatelessWidget {
                   child: Text(
                     product.description ?? 'No description available',
                     style: const TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 16.0,
                     ),
                     softWrap: true, // Enable text wrapping

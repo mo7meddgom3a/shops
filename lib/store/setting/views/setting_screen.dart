@@ -20,8 +20,9 @@ class SettingsScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => UserDataCubit()..fetchUserData(),
       child: Scaffold(
-        backgroundColor: ColorConstant.bgColor,
         appBar: AppBar(
+          backgroundColor: Colors.blueGrey,
+
           leading: IconButton(
             icon: const Icon(EvaIcons.editOutline, color: Colors.white),
             onPressed: () {
@@ -31,11 +32,11 @@ class SettingsScreen extends StatelessWidget {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     scrollable: true,
-                    surfaceTintColor: ColorConstant.bgColor,
+                    surfaceTintColor:Colors.blueGrey,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    backgroundColor: ColorConstant.primaryColor,
+                    backgroundColor: Colors.blueGrey,
                     content: const UserDataPage(),
                     actions: const [],
                   );
@@ -43,7 +44,6 @@ class SettingsScreen extends StatelessWidget {
               );
             },
           ),
-          backgroundColor: ColorConstant.bgColor,
           title: const Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

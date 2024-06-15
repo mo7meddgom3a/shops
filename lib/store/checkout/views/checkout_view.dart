@@ -19,10 +19,10 @@ class CheckOutView extends StatelessWidget {
 
       ],
       child: Scaffold(
-        backgroundColor: ColorConstant.bgColor,
+        backgroundColor:Colors.white,
         appBar: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: ColorConstant.primaryColor,
+            statusBarColor: Colors.blueGrey,
             systemNavigationBarDividerColor: ColorConstant.primaryColor,
           ),
           leading: IconButton(
@@ -32,10 +32,10 @@ class CheckOutView extends StatelessWidget {
             icon: const Icon(EvaIcons.arrowBack,
                 color: Colors.white),
           ),
-          backgroundColor: ColorConstant.bgColor,
+          backgroundColor:Colors.blueGrey,
           title: const Center(
             child: Text(
-              'الطلب',
+              'اتمام الطلب',
               style:  TextStyle(color: Colors.white),
             ),
           ),

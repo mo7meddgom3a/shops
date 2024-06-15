@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -52,7 +53,7 @@ class CheckOutViewBody extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.blueGrey,
                   ),
                   textDirection: TextDirection.rtl,
                 ),
@@ -68,7 +69,7 @@ class CheckOutViewBody extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.blueGrey,
                   ),
                   textDirection: TextDirection.rtl,
                 ),
@@ -85,7 +86,7 @@ class CheckOutViewBody extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.blueGrey,
                   ),
                   textDirection: TextDirection.rtl,
                 ),
@@ -110,7 +111,7 @@ class CheckOutViewBody extends StatelessWidget {
                         minimumSize: const Size(double.infinity, 50),
                       ),
                       child: const Text(
-                        'اختر الموقع من ',
+                        'اضغط لتحديد موقع التوصيل',
                         style: TextStyle(color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
@@ -159,7 +160,7 @@ class CheckOutViewBody extends StatelessWidget {
                         minimumSize: const Size(double.infinity, 50),
                       ),
                       child: const Text(
-                              'Submit Order',
+                              'اتمام الطلب',
                               style: TextStyle(color: Colors.white),
                               textAlign: TextAlign.center,
                             ),
@@ -200,23 +201,31 @@ class CustomTextFormField extends StatelessWidget {
       },
       controller: controller,
       keyboardType: keyboardType ?? TextInputType.text,
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: Colors.black),
       textAlign: TextAlign.right,
       decoration: InputDecoration(
-        focusedErrorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red),
+        focusedErrorBorder:  OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+
+          borderSide: const BorderSide(color: Colors.red),
         ),
-        errorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red),
+        errorBorder:  OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+
+          borderSide: const BorderSide(color: Colors.red),
         ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
+        enabledBorder:  OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+
+          borderSide: const BorderSide(color: Colors.blueGrey),
         ),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
+        focusedBorder:  OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+
+          borderSide: const BorderSide(color: Colors.blueGrey),
         ),
         hintText: hintText,
-        hintStyle: const TextStyle(color: Colors.white),
+        hintStyle: const TextStyle(color: Colors.blueGrey),
         border: const OutlineInputBorder(),
       ),
     );

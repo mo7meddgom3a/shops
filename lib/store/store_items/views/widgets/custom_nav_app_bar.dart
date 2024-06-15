@@ -13,7 +13,7 @@ class CustomNavAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      color: ColorConstant.bgColor,
+      color: Colors.blueGrey,
 
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -36,7 +36,7 @@ class CustomNavAppBar extends StatelessWidget {
                   },
                   icon: Icon(
                     EvaIcons.shoppingCartOutline,
-                    color: ColorConstant.whiteA700,
+                    color: Colors.white,
                     size: 25,
                   ),
                 ),

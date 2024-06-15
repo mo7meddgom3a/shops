@@ -69,7 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 								width: MediaQuery.of(context).size.width * 0.9,
 								child: MyTextField(
 										controller: emailController,
-										hintText: 'Email',
+										hintText: 'البريد الالكتروني',
 										obscureText: false,
 										keyboardType: TextInputType.emailAddress,
 										prefixIcon: const Icon(EvaIcons.email),
@@ -88,7 +88,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 								width: MediaQuery.of(context).size.width * 0.9,
 								child: MyTextField(
 										controller: passwordController,
-										hintText: 'Password',
+										hintText: 'كلمه المرور',
 										obscureText: obscurePassword,
 										keyboardType: TextInputType.visiblePassword,
 										prefixIcon: const Icon(EvaIcons.lock),
@@ -225,7 +225,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 								width: MediaQuery.of(context).size.width * 0.9,
 								child: MyTextField(
 										controller: nameController,
-										hintText: 'Name',
+										hintText: 'الاسم',
 										obscureText: false,
 										keyboardType: TextInputType.name,
 										prefixIcon: const Icon(EvaIcons.person),
@@ -272,7 +272,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 										child: const Padding(
 											padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
 											child: Text(
-												'Sign Up',
+												'انشاء حساب',
 												textAlign: TextAlign.center,
 												style: TextStyle(
 														color: Colors.white,

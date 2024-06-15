@@ -15,8 +15,10 @@ class MyOrders extends StatelessWidget {
     return BlocProvider(
       create: (context) => OrdersCubit()..fetchUserOrders(),
       child: Scaffold(
-        appBar: AppBar(
-            backgroundColor: ColorConstant.primaryColor,
+          backgroundColor: Colors.white,
+
+          appBar: AppBar(
+            backgroundColor: Colors.blueGrey,
             title: const Center(child: Text('طلباتي        ',style: TextStyle(color: Colors.white))),
             leading: IconButton(
               onPressed: () {
@@ -25,7 +27,6 @@ class MyOrders extends StatelessWidget {
               icon: const Icon(Icons.arrow_back, color: Colors.white),
             ),
           ),
-          backgroundColor: ColorConstant.bgColor,
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(10),

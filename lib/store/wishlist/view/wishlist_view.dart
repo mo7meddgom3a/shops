@@ -13,7 +13,7 @@ class WishListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorConstant.bgColor,
+      backgroundColor:Colors.white,
       body: const WishListViewBody(),
     );
   }

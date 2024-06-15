@@ -37,12 +37,9 @@ class ProductCard extends StatelessWidget {
         );
       },
       child: SizedBox(
-        child: Container(
-          width: widthValue,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.white,
-          ),
+        child: Card(
+          elevation: 2,
+
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
