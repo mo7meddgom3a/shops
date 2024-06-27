@@ -23,7 +23,7 @@ class CatalogViewBody extends StatelessWidget {
           return GridView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, childAspectRatio: .8 , crossAxisSpacing: 10),
+                crossAxisCount: 2, childAspectRatio: .65 , crossAxisSpacing: 10),
             itemCount: categoryProducts?.length,
             itemBuilder: (context, index) {
               return Center(

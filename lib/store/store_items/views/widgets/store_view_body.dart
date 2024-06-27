@@ -112,10 +112,10 @@ class StoreViewBody extends StatelessWidget {
                         sliver: SliverGrid(
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
+                            crossAxisCount: 2,
                             mainAxisSpacing: 20.0,
                             crossAxisSpacing: 20.0,
-                            childAspectRatio: 0.5,
+                            childAspectRatio: 0.6,
                           ),
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {

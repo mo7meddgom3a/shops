@@ -13,7 +13,7 @@ import 'widgets/custom_container.dart';
 import 'widgets/user_data_form.dart';
 
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({Key? key});
+  const SettingsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,6 @@ class SettingsScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blueGrey,
-
           leading: IconButton(
             icon: const Icon(EvaIcons.editOutline, color: Colors.white),
             onPressed: () {
@@ -32,7 +31,7 @@ class SettingsScreen extends StatelessWidget {
                 builder: (BuildContext context) {
                   return AlertDialog(
                     scrollable: true,
-                    surfaceTintColor:Colors.blueGrey,
+                    surfaceTintColor: Colors.blueGrey,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
@@ -60,9 +59,9 @@ class SettingsScreen extends StatelessWidget {
         ),
         body: BlocBuilder<UserDataCubit, UserDataState>(
           builder: (context, state) {
-            if (state is UserDataLoading) {
+            if (state.status == UserDataStatus.loading) {
               return Center(child: loadingIndicator(color: Colors.white));
-            } else if (state is UserDataLoaded) {
+            } else if (state.status == UserDataStatus.loaded) {
               final userData = state.userData;
               return SingleChildScrollView(
                 child: Column(
@@ -85,54 +84,51 @@ class SettingsScreen extends StatelessWidget {
                           child: userInfoState is ImageLoading
                               ? loadingIndicator()
                               : userInfoState is ImageLoaded
-                                  ? StreamBuilder(
-                                      stream: FirebaseFirestore.instance
-                                          .collection('users')
-                                          .doc(FirebaseAuth
-                                              .instance.currentUser!.uid)
-                                          .snapshots(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasError) {
-                                          return const Text('Error: ');
-                                        }
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return loadingIndicator(
-                                            color: Colors.white,
-                                          );
-                                        }
-                                        final userData = snapshot.data!.data()
-                                            as Map<String, dynamic>;
-                                        return Image.network(
-                                            userData['profilePicture']);
-                                      })
-                                  : Image.asset('assets/user.png'),
+                              ? StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return const Text('Error: ');
+                                }
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return loadingIndicator(
+                                    color: Colors.white,
+                                  );
+                                }
+                                final userData = snapshot.data!.data()
+                                as Map<String, dynamic>;
+                                return Image.network(userData['profilePicture']);
+                              })
+                              : Image.asset('assets/user.png'),
                         );
                       },
                     ),
                     CustomContainerUser(
                       text1: ':  الاسم',
-                      text2: userData['name'] ?? 'غير متوفر',
+                      text2: userData?.name ?? 'غير متوفر',
                     ),
                     CustomContainerUser(
                       text1: ':  البريد الإلكتروني',
-                      text2: userData['email'] ?? 'غير متوفر',
+                      text2: userData?.email ?? 'غير متوفر',
                     ),
                     CustomContainerUser(
                       text1: ' :   رقم الهاتف',
-                      text2: userData['PhoneNumber'] ?? 'غير متوفر',
+                      text2: userData?.phoneNumber ?? 'غير متوفر',
                     ),
                   ],
                 ),
               );
-            } else if (state is UserDataError) {
-              return const Center(
-                  child: Text('حدث خطأ أثناء جلب بيانات المستخدم',
-                      style: TextStyle(color: Colors.white)));
             } else {
               return const Center(
-                  child: Text('حدث خطأ غير متوقع',
-                      style: TextStyle(color: Colors.white)));
+                child: Text(
+                  'حدث خطأ غير متوقع',
+                  style: TextStyle(color: Colors.black),
+                ),
+              );
             }
           },
         ),
@@ -142,7 +138,7 @@ class SettingsScreen extends StatelessWidget {
 }
 
 class UserDataPage extends StatelessWidget {
-  const UserDataPage({Key? key});
+  const UserDataPage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -32,9 +32,10 @@ class ProductDetailsView extends StatelessWidget {
         ),
         backgroundColor: Colors.blueGrey,
         title: Text(
-          product.name,
+          "تفاصيل المنتج",
           style: const TextStyle(color: Colors.white),
         ),
+        centerTitle: true,
       ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.white,

@@ -11,7 +11,7 @@ class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartInitial());
   CollectionReference wishList = FirebaseFirestore.instance.collection('cart');
 
-   addToFireStoreCart({required ProductModel product}) async {
+  addToFireStoreCart({required ProductModel product}) async {
     try {
       // Create a list to hold the maps
 
@@ -30,8 +30,8 @@ class CartCubit extends Cubit<CartState> {
           "productCount": 1,
         };
         wishList.doc(user.uid).collection("items").doc(product.productID).set(
-              wishlistItem,
-            );
+          wishlistItem,
+        );
       }
     } catch (e) {
       emit(CartError(e.toString()));
@@ -128,7 +128,7 @@ class CartCubit extends Cubit<CartState> {
   }
 
   // git the actual product count of the type int from the firestore
-Stream <int> productCount ({required ProductModel product}) async* {
+  Stream <int> productCount ({required ProductModel product}) async* {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       Stream<QuerySnapshot> usersStream = FirebaseFirestore.instance
@@ -143,7 +143,7 @@ Stream <int> productCount ({required ProductModel product}) async* {
           }
         }
       }
-      }
+    }
     yield 0;
   }
 

@@ -16,7 +16,7 @@ class CartProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Column(
         children: [
           Card(
@@ -26,9 +26,12 @@ class CartProductCard extends StatelessWidget {
             child: Row(
               children: [
                 Container(
+                  margin: const EdgeInsets.all(10),
                   height: 80,
                   width: 100,
                   decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blueGrey),
+                    borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(
                       image: NetworkImage(product.imageUrl[0]),
                       fit: BoxFit.contain,

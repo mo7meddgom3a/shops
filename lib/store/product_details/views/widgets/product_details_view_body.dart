@@ -45,9 +45,9 @@ class ProductDetailsViewBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  product.name,
+                  product.name ,
                   style: const TextStyle(
-                    color: Colors.white,
+                    color: Colors.blueGrey,
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,
                   ),

@@ -8,6 +8,7 @@ import 'package:anwer_shop/store/wishlist/cubit/wish_list_cubit.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:photo_view/photo_view.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -45,40 +46,89 @@ class ProductCard extends StatelessWidget {
             children: [
               SizedBox(
                 height: heightValue,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                child: Card(
+                  elevation: .5,
                   margin: const EdgeInsets.all(5),
-                  width: widthValue,
-                  height: heightValue,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      product.imageUrl[0],
-                      fit: BoxFit.contain,
+                    child: InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                              child: SizedBox(
+                                width: widthValue *4, // Adjust as needed
+                                height: heightValue*5 , // Adjust as needed
+                                child: PhotoView(
+                                  imageProvider: NetworkImage(product.imageUrl[0]),
+                                  minScale: PhotoViewComputedScale.contained * 0.8,
+                                  maxScale: PhotoViewComputedScale.covered * 2.0,
+                                  initialScale: PhotoViewComputedScale.contained,
+                                  backgroundDecoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        blurRadius: 5,
+                                        spreadRadius: 5,
+                                      ),
+                                    ],
+                                    border: Border.all(
+                                      color: Colors.grey,
+                                      width: 1,
+                                    ),
+                                  ),
+
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+
+                      child: Image.network(
+                        width: widthValue,
+                        height: heightValue / 1.5,
+                        product.imageUrl[0],
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            EvaIcons.imageOutline,
+                            color: ColorConstant.bgColor,
+                          );
+                        },
+
+                      ),
                     ),
                   ),
                 ),
               ),
               SizedBox(
                 width: widthValue,
-                height: heightValue / 2,
-                child: Column(
-                  children: [
-                    Text(
-                      product.name,
-                      style: const TextStyle(
-                        color: Colors.black,
+                height: heightValue / 1.5,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        product.name,
+                        style: const TextStyle(
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                    Text(
-                      "Price : ${product.price}",
-                      style: const TextStyle(
-                        color: Colors.black,
+                      Text(
+                        "Price : ${product.price}",
+                        style: const TextStyle(
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               SizedBox(

@@ -13,11 +13,11 @@ class UserDataView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<UserDataCubit, UserDataState>(
       builder: (context, state) {
-        if (state is UserDataLoading) {
+        if (state.status == UserDataStatus.loading) {
           return Center(
               child: loadingIndicator(
-            color: Colors.white,
-          ));
+                color: Colors.white,
+              ));
         }
         return const UserDataForm();
       },

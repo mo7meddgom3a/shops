@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:anwer_shop/store/setting/cubit/user_state.dart';
+import 'package:anwer_shop/store/setting/model/user_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,41 +12,39 @@ import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:motion_toast/motion_toast.dart';
 
-
 class UserDataCubit extends Cubit<UserDataState> {
   final TextEditingController phoneNumberController = TextEditingController();
   late XFile selectedImage;
 
-  UserDataCubit() : super(UserDataInitial());
+  UserDataCubit() : super(const UserDataState());
 
   void fetchUserData() async {
     try {
-      emit(UserDataLoading());
+      emit(state.copyWith(status: UserDataStatus.loading));
       final userDataSnapshot = await FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .get();
-      final userData = userDataSnapshot.data() as Map<String, dynamic>;
-      phoneNumberController.text = userData['PhoneNumber'] ?? '';
-      emit(UserDataLoaded(userData));
+      final userData = UserModel.fromMap(userDataSnapshot.data()!);
+      emit(state.copyWith(status: UserDataStatus.loaded, userData: userData));
     } catch (e) {
-      emit(UserDataError());
+      emit(state.copyWith(status: UserDataStatus.error, errorMessage: e.toString()));
     }
   }
 
-  Future<void> insertProfilPic() async {
-    emit(UserImageLoading());
+  Future<void> insertProfilePic() async {
+    emit(state.copyWith(status: UserDataStatus.imageLoading));
     try {
       final picker = ImagePicker();
       final selectedFile = await picker.pickImage(source: ImageSource.gallery);
 
       if (selectedFile != null) {
         selectedImage = selectedFile;
-        emit(UserImageAdded());
+        emit(state.copyWith(status: UserDataStatus.imageAdded));
         return;
       }
     } catch (e) {
-      emit(UserDataError());
+      emit(state.copyWith(status: UserDataStatus.error, errorMessage: e.toString()));
     }
   }
 
@@ -54,8 +53,7 @@ class UserDataCubit extends Cubit<UserDataState> {
       if (selectedImage.path.isNotEmpty) {
         Reference storageReference = FirebaseStorage.instance.ref().child(
             'profile_pictures/${FirebaseAuth.instance.currentUser!.uid}');
-        UploadTask uploadTask =
-        storageReference.putFile(File(selectedImage.path));
+        UploadTask uploadTask = storageReference.putFile(File(selectedImage.path));
         TaskSnapshot taskSnapshot = await uploadTask;
         String url = await taskSnapshot.ref.getDownloadURL();
 
@@ -65,12 +63,13 @@ class UserDataCubit extends Cubit<UserDataState> {
         await userDocRef.set({'profilePicture': url}, SetOptions(merge: true));
       }
     } catch (e) {
-      emit(UserDataError());
+      emit(state.copyWith(status: UserDataStatus.error, errorMessage: e.toString()));
     }
   }
 
   Future<void> updateUser(BuildContext context) async {
-    emit(UserDataLoading());
+    emit(state.copyWith(status: UserDataStatus.loading));
+
     try {
       final userDocRef = FirebaseFirestore.instance
           .collection('users')
@@ -84,18 +83,19 @@ class UserDataCubit extends Cubit<UserDataState> {
         title: const Text("Success 🎉"),
         description: const Text("User data updated successfully"),
       ).show(context);
+
       // Emit a new state with the updated user data
-      final updatedUserData = {
-        'PhoneNumber': phoneNumberController.text,
-      };
-      emit(UserDataLoaded(updatedUserData));
+      emit(state.copyWith(
+        status: UserDataStatus.loaded,
+        userData: state.userData!,
+      ));
 
       // Optional: Pop the page if it's still mounted
       if (context.mounted) {
         Navigator.pop(context);
       }
     } catch (e) {
-      emit(UserDataError());
+      emit(state.copyWith(status: UserDataStatus.error, errorMessage: e.toString()));
     }
   }
 

@@ -8,7 +8,7 @@ part 'search_state.dart';
 class SearchCubit extends Cubit<SearchState> {
   SearchCubit() : super(SearchInitial());
 
-  void search(String query) async {
+   search(String query) async {
     if (query.isEmpty) {
       emit(SearchInitial());
       return;

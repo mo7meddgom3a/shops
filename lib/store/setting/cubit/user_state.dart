@@ -1,20 +1,28 @@
 // Define your states
-abstract class UserDataState {}
+import '../model/user_model.dart';
 
-class UserDataInitial extends UserDataState {}
+enum UserDataStatus { initial, loading, loaded, error, imageLoading, imageAdded }
 
-class UserDataLoading extends UserDataState {}
+class UserDataState {
+  final UserDataStatus status;
+  final UserModel? userData;
+  final String? errorMessage;
 
-class UserDataLoaded extends UserDataState {
-  final Map<String, dynamic> userData;
+  const UserDataState({
+    this.status = UserDataStatus.initial,
+    this.userData,
+    this.errorMessage,
+  });
 
-  UserDataLoaded(this.userData);
+  UserDataState copyWith({
+    UserDataStatus? status,
+    UserModel? userData,
+    String? errorMessage,
+  }) {
+    return UserDataState(
+      status: status ?? this.status,
+      userData: userData ?? this.userData,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
 }
-
-class UserDataError extends UserDataState {}
-
-class UserImageLoaded extends UserDataState {}
-
-class UserImageLoading extends UserDataState {}
-
-class UserImageAdded extends UserDataState {}

@@ -55,7 +55,7 @@ class UserDataForm extends StatelessWidget {
                           backgroundColor: ColorConstant.primaryColor,
                         ),
                         onPressed: () {
-                          cubit.insertProfilPic();
+                          cubit.insertProfilePic();
                         },
                         child: const Text(
                           "اختر صورة",
@@ -63,12 +63,12 @@ class UserDataForm extends StatelessWidget {
                           textDirection: TextDirection.rtl,
                         ),
                       ),
-                      state is UserImageAdded
+                      state.status == UserDataStatus.loaded
                           ? Icon(
                         EvaIcons.checkmarkCircle2,
                         color: ColorConstant.green,
                       )
-                          : state is UserImageLoading
+                          : state.status == UserDataStatus.error
                           ? loadingIndicator()
                           : const SizedBox.shrink()
                     ],

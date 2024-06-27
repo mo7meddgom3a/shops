@@ -1,15 +1,18 @@
 import 'package:anwer_shop/core/loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:anwer_shop/core/colors.dart';
 import 'package:anwer_shop/store/search/cubit/search_cubit.dart';
 import 'package:anwer_shop/store/store_items/models/product_model.dart';
 import 'package:anwer_shop/store/store_items/views/widgets/product_card.dart';
+import 'dart:async';
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({super.key});
 
   final TextEditingController _searchController = TextEditingController();
+  Timer? _debounce;
 
   @override
   Widget build(BuildContext context) {
@@ -18,15 +21,16 @@ class SearchScreen extends StatelessWidget {
         if (didPop) _clearSearchAndPop(context);
       },
       child: Scaffold(
-        backgroundColor: ColorConstant.bgColor,
+        backgroundColor: ColorConstant.whiteA700,
         appBar: AppBar(
+          backgroundColor: Colors.blueGrey,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
-              _clearSearchAndPop(context);
+              Navigator.pop(context);
             },
           ),
-          backgroundColor: ColorConstant.primaryColor,
+          centerTitle: true,
           title: const Text(
             'بحث',
             style: TextStyle(color: Colors.white),
@@ -42,30 +46,33 @@ class SearchScreen extends StatelessWidget {
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
-                    hintText: 'بحث...',
-                    hintStyle: const TextStyle(color: Colors.white),
-                    prefixIcon: const Icon(Icons.search, color: Colors.white),
+                    label: const Text('بحث', style: TextStyle(color: Colors.blueGrey)),
+                    hintStyle: const TextStyle(color: Colors.blueGrey),
+                    prefixIcon: const Icon(Icons.search, color: Colors.blueGrey),
                     suffixIcon: _searchController.text.isNotEmpty
                         ? IconButton(
-                            icon: const Icon(Icons.clear, color: Colors.white),
-                            onPressed: () {
-                              _searchController.clear();
-                              context.read<SearchCubit>().search('');
-                            },
-                          )
+                      icon: const Icon(Icons.clear, color: Colors.blueGrey),
+                      onPressed: () {
+                        _searchController.clear();
+                        _onSearchChanged(context);
+                      },
+                    )
                         : null,
                     enabledBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                      borderSide: BorderSide(color: Colors.blueGrey),
                     ),
                     focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                      borderSide: BorderSide(color: Colors.blueGrey),
                     ),
                   ),
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.blueGrey),
                   textAlign: TextAlign.right,
                   textDirection: TextDirection.rtl,
                   onChanged: (value) {
-                    context.read<SearchCubit>().search(value);
+                    if (_debounce?.isActive ?? false) _debounce?.cancel();
+                    _debounce = Timer(const Duration(milliseconds: 500), () {
+                      _onSearchChanged(context);
+                    });
                   },
                 ),
               ),
@@ -74,22 +81,22 @@ class SearchScreen extends StatelessWidget {
                   builder: (context, state) {
                     if (state is SearchInitial) {
                       return const Center(
-                          child: Text('أدخل كلمة للبحث',
-                              style: TextStyle(color: Colors.white)));
+                        child: Text('أدخل كلمة للبحث', style: TextStyle(color: Colors.blueGrey)),
+                      );
                     } else if (state is SearchLoading) {
-                      return  Center(child: loadingIndicator(color: Colors.white));
+                      return Center(child: loadingIndicator(color: Colors.blueGrey));
                     } else if (state is SearchLoaded) {
                       if (state.items.isEmpty) {
                         return const Center(
-                            child: Text('لا توجد نتائج',
-                                style: TextStyle(color: Colors.white)));
+                          child: Text('لا توجد نتائج', style: TextStyle(color: Colors.blueGrey)),
+                        );
                       }
                       return GridView.builder(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 16),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2, childAspectRatio: .8),
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: .7,
+                        ),
                         itemCount: state.items.length,
                         itemBuilder: (context, index) {
                           final ProductModel item = state.items[index];
@@ -107,8 +114,8 @@ class SearchScreen extends StatelessWidget {
                       );
                     } else if (state is SearchError) {
                       return Center(
-                          child: Text('خطأ: ${state.message}',
-                              style: const TextStyle(color: Colors.white)));
+                        child: Text('خطأ: ${state.message}', style: const TextStyle(color: Colors.blueGrey)),
+                      );
                     } else {
                       return const SizedBox.shrink();
                     }
@@ -125,6 +132,9 @@ class SearchScreen extends StatelessWidget {
   void _clearSearchAndPop(BuildContext context) {
     _searchController.clear();
     context.read<SearchCubit>().search('');
-    Navigator.of(context).pop();
+  }
+
+  void _onSearchChanged(BuildContext context) {
+    context.read<SearchCubit>().search(_searchController.text);
   }
 }

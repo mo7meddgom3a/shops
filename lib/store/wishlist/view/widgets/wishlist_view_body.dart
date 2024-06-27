@@ -31,7 +31,7 @@ class WishListViewBody extends StatelessWidget {
           return GridView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, childAspectRatio: .8),
+                crossAxisCount: 2, childAspectRatio: .65),
             itemCount: state.wishListItems.length,
             itemBuilder: (context, index) {
               return Center(
